@@ -1,0 +1,63 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Venues Search{% endblock %}
+{% block content %}
+
+<style>
+    .hidden{
+        display:none;
+    }
+
+</style>
+
+<selection id="filter_radio">
+    <input id="name" type="radio" name="selector" value="name" checked />
+    <label for="name">Search by name</label><br />
+    <input id="city_state" type="radio" name="selector" value="city_state" />
+    <label for="city_state">Search by location</label><br />
+</selection>
+
+    <section class="" id="byname">
+        <h3>Number of search results by name for "{{ search_term }}": {{ results_by_name.count }}</h3>
+        <ul class="items">
+            {% for venue_by_name in results_by_name.data %}
+            <li>
+                <a href="/venues/{{ venue_by_name.id }}">
+                    <i class="fas fa-music"></i>
+                    <div class="item">
+                        <h5>{{ venue_by_name.name }}</h5>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="hidden" id="bylocation">
+        <h3>Number of search results by location for "{{ search_term }}": {{ results_by_location.count }}</h3>
+        <ul class="items">
+            {% for venue_by_location in results_by_location.data %}
+            <li>
+                <a href="/venues/{{ venue_by_location.id }}">
+                    <i class="fas fa-music"></i>
+                    <div class="item">
+                        <h5>{{ venue_by_location.name }}</h5>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+<script>
+    var select_name = document.getElementById("name");
+    var select_city_state = document.getElementById("city_state");
+    select_name.onchange = function (sel) {
+        document.getElementById("byname").className = '';
+        document.getElementById("bylocation").className = 'hidden';
+    };
+    select_city_state.onchange = function (sel) {
+        document.getElementById("byname").className = 'hidden';
+        document.getElementById("bylocation").className = '';
+    };
+</script>
+{% endblock %}
